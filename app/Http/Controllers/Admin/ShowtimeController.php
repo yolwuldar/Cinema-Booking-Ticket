@@ -26,8 +26,8 @@ class ShowtimeController extends Controller
         $validated = $request->validate([
             'movie_id' => 'required|exists:movies,id',
             'date' => 'required|date',
-            'start_time' => 'required|date_format:H:i:s',
-            'end_time' => 'required|date_format:H:i:s|after:start_time',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
         Showtime::create($validated);
@@ -47,8 +47,8 @@ class ShowtimeController extends Controller
         $validated = $request->validate([
             'movie_id' => 'required|exists:movies,id',
             'date' => 'required|date',
-            'start_time' => 'required|date_format:H:i:s',
-            'end_time' => 'required|date_format:H:i:s|after:start_time',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
         $showtime = Showtime::findOrFail($id);

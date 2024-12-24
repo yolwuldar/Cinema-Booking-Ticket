@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="my-4">Manage Movies</h1>
+    <h1 class="my-4">Daftar Film</h1>
     <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3">Tambah Film</a>
     
     <div class="table-responsive">

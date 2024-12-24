@@ -1,45 +1,35 @@
 <?php
 
 namespace App\Http\Controllers\User;
-
+use App\Models\Movie;
 use App\Models\Showtime;
-use App\Models\Seat;
-use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BookingController extends Controller
 {
-    // buat nampilin halaman milih kursi
-    public function book(Showtime $showtime)
+    // Menampilkan halaman milih kursi
+    public function show($movie_id)
     {
-        $seats = Seat::where('room_id', $showtime->room_id)->where('is_booked', false)->get();
-        return view('user.booking.book', compact('showtime', 'seats'));
+        $movie = Movie::with('showtimes')->findOrFail($movie_id);
+        return view('user.booking.booking', compact('movie'));
     }
 
-    // konfirmasi pemesanan kursi
-    public function confirm(Request $request, Showtime $showtime)
+    public function store(Request $request)
     {
-        $request->validate([
-            'seats' => 'required|array',
-            'seats.*' => 'exists:seats,id',
+        // Logika untuk menyimpan pemesanan tiket
+        $validated = $request->validate([
+            'movie_id' => 'required|exists:movies,id',
+            'showtime_id' => 'required|exists:showtimes,id',
+            'seats' => 'required|array',  // Misalnya kursi yang dipilih
         ]);
 
+        // Simpan pemesanan
+        // Booking::create($validated); // Model pemesanan
 
-        $booking = Booking::create([
-            'user_id' => auth()->id(),
-            'showtime_id' => $showtime->id,
-        ]);
-
-        $booking->seats()->attach($request->seats);
-
-        Seat::whereIn('id', $request->seats)->update(['is_booked' => true]);
-
-        // redirect ke halaman sukses
-        return redirect()->route('user.booking.success');
+        return redirect()->route('user.booking.success')->with('success', 'Booking berhasil!');
     }
 
-    // halaman pemesanan yang sudah sukses
     public function success()
     {
         return view('user.booking.success');

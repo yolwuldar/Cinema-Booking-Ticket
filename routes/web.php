@@ -47,9 +47,8 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
 
 // booking
 Route::middleware(['auth'])->group(function () {
-    Route::get('showtime/{showtime_id}/book', [BookingController::class, 'book'])->name('user.booking');
-    Route::post('showtime/{showtime_id}/book/confirm', [BookingController::class, 'confirm'])->name('user.confirm.booking');
-    Route::get('booking/success', [BookingController::class, 'success'])->name('user.booking.success');
+    Route::get('/movies/{movie_id}/booking', [BookingController::class, 'show'])->name('user.booking');
+    Route::post('/booking', [BookingController::class, 'store'])->name('user.booking.store');
 });
 
 
